@@ -129,6 +129,28 @@ int main(int argc, char** argv)
         {
             expenses.New();
         }
+        else if (cmd == "export")
+        {
+            if (args.Count() == 2)
+            {
+                if (args[0] == "csv")
+                {
+                    expenses.ExportCsv(args[1]);
+                }
+                else if (args[0] == "html")
+                {
+                    expenses.ExportHtml(args[1]);
+                }
+                else
+                {
+                    std::cout << "Usage: export <csv/html> <file>" << std::endl;
+                }
+            }
+            else
+            {
+                std::cout << "Usage: export <csv/html> <file>" << std::endl;
+            }
+        }
         else
         {
             std::cout << "Command \"" << cmd << "\" is unknown!" << std::endl;

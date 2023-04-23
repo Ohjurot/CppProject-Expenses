@@ -45,6 +45,15 @@ class ExpenseSheet
         void List(std::ostream& os) const;
         double Eval() const;
 
+        bool ExportCsv(const std::filesystem::path& file) const;
+        bool ExportHtml(const std::filesystem::path& file) const;
+
+    private:
+        static inline std::string TextHTMLClass(double value)
+        {
+            return value >= 0. ? "text-success-emphasis" : "text-danger-emphasis";
+        }
+
     private:
         std::filesystem::path m_path;
         std::vector<Entry> m_entrys;
