@@ -42,7 +42,7 @@ class ExpenseSheet
 
         bool Add(std::string_view label, double value);
         bool Del(std::string_view label);
-        void List(std::ostream& os) const;
+        void List(std::ostream& os, bool repl = false) const;
         double Eval() const;
 
         bool ExportCsv(const std::filesystem::path& file) const;

@@ -119,12 +119,20 @@ bool ExpenseSheet::Del(std::string_view label)
     return false;
 }
 
-void ExpenseSheet::List(std::ostream& os) const
+void ExpenseSheet::List(std::ostream& os, bool repl) const
 {
     size_t idx = 0;
     for (const Entry& e : m_entrys)
     {
-        os << "(" << idx++ << ") " << e.label << " " << e.value << std::endl;
+        if (repl)
+            os << idx++ << "," << e.label << "," << e.value << "\n";
+        else
+            os << "(" << idx++ << ") " << e.label << " " << e.value << "\n";
+    }
+
+    if (repl && idx == 0)
+    {
+        os << "0" << "\n";
     }
 }
 
