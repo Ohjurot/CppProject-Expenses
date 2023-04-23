@@ -3,8 +3,12 @@
 #include <vector>
 #include <string>
 #include <ostream>
+#include <istream>
+#include <sstream>
+#include <fstream>
 #include <iomanip>
 #include <algorithm>
+#include <filesystem>
 #include <string_view>
 
 class ExpenseSheet
@@ -12,8 +16,13 @@ class ExpenseSheet
     public:
         struct Entry
         {
-            std::string label;
+            // Binary format byte[...]\0byte[sizeof(double)]
+
+            std::string label; 
             double value = 0.;
+
+            void Serialize(std::ostream& out) const;
+            void Deserialize(std::istream& in);
 
             inline bool operator==(const Entry& rhs) const
             {
@@ -27,11 +36,16 @@ class ExpenseSheet
 
         ExpenseSheet& operator=(const ExpenseSheet&) = default;
 
+        void New();
+        bool Open(const std::filesystem::path& dataFile);
+        bool Save(const std::filesystem::path& dataFile = "") const;
+
         bool Add(std::string_view label, double value);
         bool Del(std::string_view label);
         void List(std::ostream& os) const;
         double Eval() const;
 
     private:
+        std::filesystem::path m_path;
         std::vector<Entry> m_entrys;
 };

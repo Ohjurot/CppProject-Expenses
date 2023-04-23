@@ -5,12 +5,21 @@
 #include <iomanip>
 #include <iostream>
 #include <algorithm>
+#include <filesystem>
 
-int main()
+int main(int argc, char** argv)
 {
-    std::string line;
     ExpenseSheet expenses;
 
+    // Check if file shall be opend
+    if (argc == 2)
+    {
+        std::filesystem::path path = argv[1];
+        expenses.Open(path);
+    }
+
+    // Command loop
+    std::string line;
     while (true)
     {
         // Getting user input
@@ -78,6 +87,47 @@ int main()
         else if (cmd == "exit")
         {
             break;
+        }
+        else if (cmd == "open")
+        {
+            if (args.Count() == 1)
+            {
+                std::filesystem::path p = args[0];
+                if (!expenses.Open(p))
+                {
+                    std::cout << "Failed to open file!" << std::endl;
+                }
+            }
+            else
+            {
+                std::cout << "Usage: open <path>" << std::endl;
+            }
+        }
+        else if (cmd == "save")
+        {
+            if (args.Count() == 1)
+            {
+                std::filesystem::path p = args[0];
+                if (!expenses.Save(p))
+                {
+                    std::cout << "Failed to save file!" << std::endl;
+                }
+            }
+            else if (args.Count() == 0)
+            {
+                if (!expenses.Save())
+                {
+                    std::cout << "Failed to save file! Try: save <path>" << std::endl;
+                }
+            }
+            else
+            {
+                std::cout << "Usage: save <path>" << std::endl;
+            }
+        }
+        else if (cmd == "new")
+        {
+            expenses.New();
         }
         else
         {
